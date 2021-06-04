@@ -11,7 +11,7 @@ spec:
   selector:
     app: open-zano-pool-frontend
   externalIPs:
-  - 143.110.217.248
+  - 91.226.221.12
 ---
 apiVersion: v1
 kind: Service
@@ -24,4 +24,4 @@ spec:
   selector:
     app: open-zano-pool-api
   externalIPs:
-  - 143.110.217.248
+  - 91.226.221.12
