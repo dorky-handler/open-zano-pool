@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: oovp-test-container
-        image: lgray/open-zano-pool-frontend:latest
+        image: animalspirits/zano-frontend:latest
         env:
         - name: TZ
           value: "Etc/Universal"
