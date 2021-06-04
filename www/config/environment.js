@@ -15,18 +15,18 @@ module.exports = function(environment) {
 
     APP: {
       // API host and port
-      ApiUrl: 'http://zano.waietng-pool.us:21111/',
+      ApiUrl: 'http://91.226.221.12:21111/',
 
       // HTTP mining endpoint
-      HttpHost: 'http://zano.waietng-pool.us',
+      HttpHost: 'http://91.226.221.12',
       HttpPort: 11112,
 
       // Stratum mining endpoint
-      StratumHost: 'zano.waietng-pool.us',
+      StratumHost: 'http://91.226.221.12/',
       StratumPort: 12111,
 
       // Fee and payout details
-      PoolFee: '5%',
+      PoolFee: '1%',
       PayoutThreshold: '0.5 Zano',
 
       // For network hashrate (change for your favourite fork)
