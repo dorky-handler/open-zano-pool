@@ -21,7 +21,7 @@ spec:
           secretName: api-config-file
       containers:
       - name: oovp-test-container
-        image: lgray/open-zano-pool-api:latest
+        image: animalspirits/zano-api:latest
         volumeMounts:
         - name: config
           mountPath: "/config"
