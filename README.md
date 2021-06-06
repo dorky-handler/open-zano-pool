@@ -34,7 +34,7 @@ This whole installation is containerized and comes with a full kubernetes based 
 Below we will walk through instructions for running the pool on minikube in a testing environment.
 
 
-1. Clone this repository `git clone https://github.com/zano-mining/open-zano-pool.git`
+1. Clone this repository `git clone https://github.com/dorky-handler/open-zano-pool.git`
 
 2. Install [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 
@@ -51,7 +51,7 @@ Below we will walk through instructions for running the pool on minikube in a te
 5. Initialize bcnode (you will need a chainstate snapshot saved as a `.tar.gz` file):
 
     ```bash
-    cd open-overline-pool/k8s
+    cd open-zano-pool/k8s
     kubectl apply -f zano/  
     # once that is done follow the bcnode logs and wait for it to sync
     kubectl logs $(kubectl get pods | grep zano | awk '{print $1}') -c zano -f --tail 10
@@ -66,7 +66,7 @@ Below we will walk through instructions for running the pool on minikube in a te
 7. Once the bcnode is synced bring open-zano-pool online as follows:
 
     ```bash
-    kubectl apply -f open-overline-pool/
+    kubectl apply -f open-zano-pool/
     ./local-port-forward.sh
     ```
 
