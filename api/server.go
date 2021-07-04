@@ -140,7 +140,7 @@ func (s *ApiServer) purgeStale() {
 
 func (s *ApiServer) collectStats() {
 	start := time.Now()
-	stats, err := s.backend.CollectStats(s.hashrateWindow, s.config.Blocks, s.config.Payments)
+	stats, err := s.backend.CollectStats(s.hashrateWindow, s.newWindow, s.config.Blocks, s.config.Payments)
 	if err != nil {
 		log.Printf("Failed to fetch stats from backend: %v", err)
 		return
