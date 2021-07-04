@@ -5,8 +5,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/zano-mining/open-zano-pool/rpc"
-	"github.com/zano-mining/open-zano-pool/storage"
+	"github.com/dorky-handler/open-zano-pool/rpc"
+	"github.com/dorky-handler/open-zano-pool/storage"
 )
 
 func TestMain(m *testing.M) {
