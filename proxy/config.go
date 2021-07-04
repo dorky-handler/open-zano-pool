@@ -1,10 +1,10 @@
 package proxy
 
 import (
-	"github.com/zano-mining/open-zano-pool/api"
-	"github.com/zano-mining/open-zano-pool/payouts"
-	"github.com/zano-mining/open-zano-pool/policy"
-	"github.com/zano-mining/open-zano-pool/storage"
+	"github.com/dorky-handler/open-zano-pool/api"
+	"github.com/dorky-handler/open-zano-pool/payouts"
+	"github.com/dorky-handler/open-zano-pool/policy"
+	"github.com/dorky-handler/open-zano-pool/storage"
 )
 
 type Config struct {
