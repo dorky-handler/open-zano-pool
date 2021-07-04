@@ -4,8 +4,8 @@ import (
 	"log"
 	"regexp"
 
-	"github.com/zano-mining/open-zano-pool/rpc"
-	"github.com/zano-mining/open-zano-pool/util"
+	"github.com/dorky-handler/open-zano-pool/rpc"
+	"github.com/dorky-handler/open-zano-pool/util"
 )
 
 // Allow only lowercase hexadecimal with 0x prefix
