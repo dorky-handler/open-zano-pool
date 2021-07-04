@@ -9,7 +9,7 @@ import (
 
 	"gopkg.in/redis.v3"
 
-	"github.com/zano-mining/open-zano-pool/util"
+	"github.com/dorky-handler/open-zano-pool/util"
 )
 
 type Config struct {
