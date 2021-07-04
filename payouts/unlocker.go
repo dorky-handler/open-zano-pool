@@ -11,9 +11,9 @@ import (
 
 	"github.com/ethereum/go-ethereum/common/math"
 
-	"github.com/zano-mining/open-zano-pool/rpc"
-	"github.com/zano-mining/open-zano-pool/storage"
-	"github.com/zano-mining/open-zano-pool/util"
+	"github.com/dorky-handler/open-zano-pool/rpc"
+	"github.com/dorky-handler/open-zano-pool/storage"
+	"github.com/dorky-handler/open-zano-pool/util"
 )
 
 type UnlockerConfig struct {
