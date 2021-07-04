@@ -19,7 +19,7 @@ type ApiConfig struct {
 	Enabled              bool   `json:"enabled"`
 	Listen               string `json:"listen"`
 	StatsCollectInterval string `json:"statsCollectInterval"`
-	newWindow	     string `json:"newWindow"`
+	NewWindow	     string `json:"newWindow"`
 	HashrateWindow       string `json:"hashrateWindow"`
 	HashrateLargeWindow  string `json:"hashrateLargeWindow"`
 	LuckWindow           []int  `json:"luckWindow"`
@@ -48,7 +48,7 @@ type Entry struct {
 
 func NewApiServer(cfg *ApiConfig, backend *storage.RedisClient) *ApiServer {
 	hashrateWindow := util.MustParseDuration(cfg.HashrateWindow)
-	newWindow := util.MustParseDuration(cfg.newWindow)
+	newWindow := util.MustParseDuration(cfg.NewWindow)
 	hashrateLargeWindow := util.MustParseDuration(cfg.HashrateLargeWindow)
 	return &ApiServer{
 		config:              cfg,
