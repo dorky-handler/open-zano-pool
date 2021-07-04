@@ -664,7 +664,7 @@ func (r *RedisClient) FlushStaleStats(window, largeWindow time.Duration) (int64,
 	return total, nil
 }
 
-func (r *RedisClient) CollectStats(nanoWindows time.Duration,smallWindow time.Duration, maxBlocks, maxPayments int64) (map[string]interface{}, error) {
+func (r *RedisClient) CollectStats(nanoWindow time.Duration,smallWindow time.Duration, maxBlocks, maxPayments int64) (map[string]interface{}, error) {
 	window := int64(smallWindow / time.Second)
 	nwindow := int64(nanoWindow / time.Second)
 	stats := make(map[string]interface{})
@@ -913,7 +913,7 @@ func convertWorkersStats(nwindow int64,window int64, raw *redis.ZSliceCmd) map[s
 		}
 		
 		if score >= now-nwindow {
-			worker.reporedHR += share
+			worker.reportedHR += share
 		}
 
 		if worker.LastBeat < score {
