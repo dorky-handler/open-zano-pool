@@ -12,7 +12,7 @@ import (
 	"sync"
 
 	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/zano-mining/open-zano-pool/util"
+	"github.com/dorky-handler/open-zano-pool/util"
 )
 
 type RPCClient struct {
