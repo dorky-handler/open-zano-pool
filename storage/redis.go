@@ -71,7 +71,7 @@ func (b *BlockData) key() string {
 type Miner struct {
 	LastBeat  int64 `json:"lastBeat"`
 	HR        int64 `json:"hr"`
-	
+	reportedHR int64 `json:"rephr"`
 	Offline   bool  `json:"offline"`
 	startedAt int64
 }
