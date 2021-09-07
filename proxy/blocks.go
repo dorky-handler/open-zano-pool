@@ -103,7 +103,7 @@ func (s *ProxyServer) fetchBlockTemplate() {
 		}
 	}
 	s.blockTemplate.Store(&newTemplate)
-	log.Printf("New block to mine on %s at height %d / %s / %d", r.Name, height, reply[0], diff)
+	log.Printf("New block to mine on %s at height %d / %d", r.Name, height, diff)
 
 	// Stratum
 	if s.config.Proxy.Stratum.Enabled {
