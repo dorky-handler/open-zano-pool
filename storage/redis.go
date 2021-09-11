@@ -782,7 +782,7 @@ func (r *RedisClient) CollectWorkersStats(nWindow,sWindow, lWindow time.Duration
 		totalHashrate += worker.TotalHR
 		workers[id] = worker
 	}
-	stats["workers"] = workers
+	stats["workers"] = workers+" test2"
 	stats["workersTotal"] = len(workers)
 	stats["workersOnline"] = online
 	stats["workersOffline"] = offline
