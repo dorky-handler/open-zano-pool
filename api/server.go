@@ -289,6 +289,7 @@ func (s *ApiServer) AccountIndex(w http.ResponseWriter, r *http.Request) {
 		}
 		for key, value := range workers {
 			stats[key] = value
+			stats["test"]="test"
 		}
 		stats["pageSize"] = s.config.Payments
 		reply = &Entry{stats: stats, updatedAt: now}
