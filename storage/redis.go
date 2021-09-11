@@ -746,7 +746,7 @@ func (r *RedisClient) CollectWorkersStats(nWindow,sWindow, lWindow time.Duration
 	online := int64(0)
 	offline := int64(0)
 	workers := convertWorkersStats(nanoWindow,smallWindow, cmds[1].(*redis.ZSliceCmd))
-        var slice = make([]int,len(workers))
+        var slice = make([]int64,len(workers))
 	for id, worker := range workers {
 		timeOnline := now - worker.startedAt
 		if timeOnline < 600 {
