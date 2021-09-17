@@ -191,6 +191,10 @@ func (r *RedisClient) WriteShare(login, id string, params []string, diff int64, 
 	}
 	// Duplicate share, (nonce, powHash, mixDigest) pair exist
 	if exist {
+		_, err = tx.Exec(func() error {
+		r.writeStaleShare(tx, ms, ts, login, id, diff, window)
+		return nil
+	})
 		return true, nil
 	}
 	tx := r._leadClient.Multi()
@@ -255,6 +259,15 @@ func (r *RedisClient) writeShare(tx *redis.Multi, ms, ts int64, login, id string
 	tx.Expire(r.formatKey("hashrate", login), expire) // Will delete hashrates for miners that gone
 	tx.HSet(r.formatKey("miners", login), "lastShare", strconv.FormatInt(ts, 10))
 }
+
+func (r *RedisClient) writeStaleShare(tx *redis.Multi, ms, ts int64, login, id string, diff int64, expire time.Duration) {
+	tx.HIncrBy(r.formatKey("sshares", "roundCurrent"), login, diff)
+	tx.ZAdd(r.formatKey("shashrate"), redis.Z{Score: float64(ts), Member: join(diff, login, id, ms)})
+	tx.ZAdd(r.formatKey("shashrate", login), redis.Z{Score: float64(ts), Member: join(diff, id, ms)})
+	tx.Expire(r.formatKey("shashrate", login), expire) // Will delete hashrates for miners that gone
+	tx.HSet(r.formatKey("miners", login), "lastShare", strconv.FormatInt(ts, 10))
+}
+
 
 func (r *RedisClient) formatKey(args ...interface{}) string {
 	return join(r.prefix, join(args...))
