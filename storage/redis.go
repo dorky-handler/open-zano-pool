@@ -908,6 +908,7 @@ func convertWorkersStats(nwindow int64,window int64, raw *redis.ZSliceCmd) map[s
 		share, _ := strconv.ParseInt(parts[0], 10, 64)
 		id := parts[1]
 		score := int64(v.Score)
+		fmt.Println(reflect.TypeOf(v))
 		worker := workers[id]
 
 		// Add for large window
