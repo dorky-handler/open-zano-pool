@@ -814,7 +814,7 @@ func (r *RedisClient) CollectWorkersStats(nWindow,sWindow, lWindow time.Duration
 	stats["hashrate"] = totalHashrate
 	stats["currentHashrate"] = currentHashrate
 	stats["reportedHashrate"] = reportedHashrate
-	stats["tots"] = cmds[1]
+	stats["tots"] = cmds[1].(*redis.ZSliceCmd)
 	return stats, nil
 }
 
