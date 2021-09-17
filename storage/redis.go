@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math/big"
 	"strconv"
+	"reflect"
 	"strings"
 	"time"
 
@@ -814,7 +815,7 @@ func (r *RedisClient) CollectWorkersStats(nWindow,sWindow, lWindow time.Duration
 	stats["hashrate"] = totalHashrate
 	stats["currentHashrate"] = currentHashrate
 	stats["reportedHashrate"] = reportedHashrate
-	stats["tots"] = cmds[1].(*redis.ZSliceCmd)
+	stats["tots"] = reflect.TypeOf(cmds[1].(*redis.ZSliceCmd))
 	return stats, nil
 }
 
