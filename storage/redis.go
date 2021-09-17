@@ -189,6 +189,11 @@ func (r *RedisClient) WriteShare(login, id string, params []string, diff int64, 
 	if err != nil {
 		return false, err
 	}
+	
+	ms := util.MakeTimestamp()
+	ts := ms / 1000
+	
+	
 	// Duplicate share, (nonce, powHash, mixDigest) pair exist
 	if exist {
 		_, err = tx.Exec(func() error {
@@ -200,8 +205,7 @@ func (r *RedisClient) WriteShare(login, id string, params []string, diff int64, 
 	tx := r._leadClient.Multi()
 	defer tx.Close()
 
-	ms := util.MakeTimestamp()
-	ts := ms / 1000
+	
 
 	_, err = tx.Exec(func() error {
 		r.writeShare(tx, ms, ts, login, id, diff, window)
