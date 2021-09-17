@@ -293,6 +293,7 @@ func (s *ApiServer) AccountIndex(w http.ResponseWriter, r *http.Request) {
 		}
 		stats["pageSize"] = s.config.Payments
 		reply = &Entry{stats: stats, updatedAt: now}
+		log.Printf("Stats collection finished %s", stats)
 		s.miners[login] = reply
 	}
 
