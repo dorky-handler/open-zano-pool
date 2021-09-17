@@ -197,6 +197,8 @@ func (r *RedisClient) WriteShare(login, id string, params []string, diff int64, 
 	// Duplicate share, (nonce, powHash, mixDigest) pair exist
 	if exist {
 		_, err = tx.Exec(func() error {
+	 	ms := util.MakeTimestamp()
+	        ts := ms / 1000
 		r.writeStaleShare(tx, ms, ts, login, id, diff, window)
 		return nil
 	})
