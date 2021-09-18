@@ -923,9 +923,10 @@ func convertBlockResults(rows ...*redis.ZSliceCmd) []*BlockData {
 func getStale(nwindow int64,window int64, raw *redis.ZSliceCmd) string {
 	now := util.MakeTimestamp() / 1000
 	workers := make(map[string]Worker)
-
+        var newpart = ""
 	for _, v := range raw.Val() {
 		parts := strings.Split(v.Member.(string), ":")
+		newpart = parts
 		share, _ := strconv.ParseInt(parts[0], 10, 64)
 		id := parts[1]
 		score := int64(v.Score)
@@ -952,7 +953,7 @@ func getStale(nwindow int64,window int64, raw *redis.ZSliceCmd) string {
 		}
 		workers[id] = worker
 	}
-	return parts
+	return newpart
 }
 
 
