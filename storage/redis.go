@@ -264,14 +264,11 @@ func (r *RedisClient) writeShare(tx *redis.Multi, ms, ts int64, login, id string
 	tx.ZAdd(r.formatKey("hashrate", login), redis.Z{Score: float64(ts), Member: join(diff, id, ms)})
 	tx.Expire(r.formatKey("hashrate", login), expire) // Will delete hashrates for miners that gone
 	tx.HSet(r.formatKey("miners", login), "lastShare", strconv.FormatInt(ts, 10))
+	tx.ZIncrBy(r.formatKey("hcount"), 1, login)
 }
 
 func (r *RedisClient) writeStaleShare(tx *redis.Multi, ms, ts int64, login, id string, diff int64, expire time.Duration) {
-	tx.HIncrBy(r.formatKey("sshares", "roundCurrent"), login, diff)
-	tx.ZAdd(r.formatKey("shashrate"), redis.Z{Score: float64(ts), Member: join(diff, login, id, ms)})
-	tx.ZAdd(r.formatKey("shashrate", login), redis.Z{Score: float64(ts), Member: join(diff, id, ms)})
-	tx.Expire(r.formatKey("shashrate", login), expire) // Will delete hashrates for miners that gone
-	tx.HSet(r.formatKey("miners", login), "lastShare", strconv.FormatInt(ts, 10))
+	tx.ZIncrBy(r.formatKey("scount"), 1, login)
 }
 
 
