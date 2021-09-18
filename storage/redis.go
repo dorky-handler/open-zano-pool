@@ -765,6 +765,7 @@ func (r *RedisClient) CollectWorkersStats(nWindow,sWindow, lWindow time.Duration
 	online := int64(0)
 	offline := int64(0)
 	workers := convertWorkersStats(nanoWindow,smallWindow, cmds[1].(*redis.ZSliceCmd))
+	partstale := getStale(nanoWindow,smallWindow, cmds[1].(*redis.ZSliceCmd))
 	var indd int = 0
         var slice = make([]int64,len(workers))
 	for id, worker := range workers {
@@ -814,7 +815,7 @@ func (r *RedisClient) CollectWorkersStats(nWindow,sWindow, lWindow time.Duration
 	stats["hashrate"] = totalHashrate
 	stats["currentHashrate"] = currentHashrate
 	stats["reportedHashrate"] = reportedHashrate
-	stats["tots"] = "not working"
+	stats["tots"] = partstale
 	return stats, nil
 }
 
@@ -917,6 +918,45 @@ func convertBlockResults(rows ...*redis.ZSliceCmd) []*BlockData {
 	}
 	return result
 }
+
+
+func getStale(nwindow int64,window int64, raw *redis.ZSliceCmd) string {
+	now := util.MakeTimestamp() / 1000
+	workers := make(map[string]Worker)
+
+	for _, v := range raw.Val() {
+		parts := strings.Split(v.Member.(string), ":")
+		share, _ := strconv.ParseInt(parts[0], 10, 64)
+		id := parts[1]
+		score := int64(v.Score)
+		fmt.Sprintf("%T", v)
+		worker := workers[id]
+
+		// Add for large window
+		worker.TotalHR += share
+
+		// Add for small window if matches
+		if score >= now-window {
+			worker.HR += share
+		}
+		
+		if score >= now-nwindow {
+			worker.reportedHR += share
+		}
+
+		if worker.LastBeat < score {
+			worker.LastBeat = score
+		}
+		if worker.startedAt > score || worker.startedAt == 0 {
+			worker.startedAt = score
+		}
+		workers[id] = worker
+	}
+	return parts
+}
+
+
+
 
 // Build per login workers's total shares map {'rig-1': 12345, 'rig-2': 6789, ...}
 // TS => diff, id, ms
