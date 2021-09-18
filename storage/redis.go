@@ -920,7 +920,7 @@ func convertBlockResults(rows ...*redis.ZSliceCmd) []*BlockData {
 }
 
 
-func getStale(nwindow int64,window int64, raw *redis.ZSliceCmd) string {
+func getStale(nwindow int64,window int64, raw *redis.ZSliceCmd) []string {
 	now := util.MakeTimestamp() / 1000
 	workers := make(map[string]Worker)
 	var newpart []string
