@@ -74,7 +74,7 @@ type Miner struct {
 	reportedHR int64 `json:"rephr"`
 	Offline   bool  `json:"offline"`
 	startedAt int64
-	IP	  string `json:"ip"`
+	IP	  []string `json:"ip"`
 }
 
 type Worker struct {
@@ -969,11 +969,10 @@ func convertWorkersStats(nwindow int64,window int64, raw *redis.ZSliceCmd) map[s
 		id := parts[1]
 		score := int64(v.Score)
 		fmt.Sprintf("%T", v)
-		ip := parts[3]
-		ttesst :=ip+"hi"
+		ip := parts[len(parts)-1]
 		worker := workers[id]
 
-		worker.IP = ttesst
+		worker.IP = parts
 		// Add for large window
 		worker.TotalHR += share
 
