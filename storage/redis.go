@@ -74,7 +74,7 @@ type Miner struct {
 	reportedHR int64 `json:"rephr"`
 	Offline   bool  `json:"offline"`
 	startedAt int64
-	IP	  string `json:"ip"`
+	IP	  int `json:"ip"`
 }
 
 type Worker struct {
