@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
-
+	 "reflect"
 	"gopkg.in/redis.v3"
 
 	"github.com/dorky-handler/open-zano-pool/util"
@@ -74,7 +74,7 @@ type Miner struct {
 	reportedHR int64 `json:"rephr"`
 	Offline   bool  `json:"offline"`
 	startedAt int64
-	IP	  []string `json:"ip"`
+	IP	  string `json:"ip"`
 }
 
 type Worker struct {
@@ -971,8 +971,8 @@ func convertWorkersStats(nwindow int64,window int64, raw *redis.ZSliceCmd) map[s
 		fmt.Sprintf("%T", v)
 		//ip := parts[len(parts)-1]
 		worker := workers[id]
-
-		worker.IP = parts
+		okiee := reflect.TypeOf(parts[3])
+		worker.IP = okiee
 		// Add for large window
 		worker.TotalHR += share
 
