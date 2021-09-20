@@ -6,7 +6,6 @@ import (
 	"strconv"
 	"strings"
 	"time"
-	 "reflect"
 	"gopkg.in/redis.v3"
 
 	"github.com/dorky-handler/open-zano-pool/util"
