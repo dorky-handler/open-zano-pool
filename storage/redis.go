@@ -970,8 +970,9 @@ func convertWorkersStats(nwindow int64,window int64, raw *redis.ZSliceCmd) map[s
 		ip := parts[1:]
 		ip = ip[1:]
 		ip = ip[1:]
+		ips := ip[0]
 		worker := workers[id]
-		worker.IP = ip
+		worker.IP = ips
 		// Add for large window
 		worker.TotalHR += share
 
