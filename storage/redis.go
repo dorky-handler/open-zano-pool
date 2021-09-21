@@ -947,7 +947,7 @@ func getStale(nwindow int64,window int64, raw *redis.ZSliceCmd) []string {
 		}
 		
 		if score >= now-nwindow {
-			worker.reportedHR += share
+			worker.Repo += share
 		}
 
 		if worker.LastBeat < score {
@@ -1029,7 +1029,7 @@ func convertMinersStats(nwindow int64,window int64, raw *redis.ZSliceCmd) (int64
 		score := int64(v.Score)
 		miner := miners[id]
 		miner.HR += share
-                miner.reportedHR += share
+                miner.Repo += share
 		if miner.LastBeat < score {
 			miner.LastBeat = score
 		}
