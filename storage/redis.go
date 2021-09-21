@@ -783,7 +783,7 @@ func (r *RedisClient) CollectWorkersStats(nWindow,sWindow, lWindow time.Duration
 		if timeOnline >= nanoWindow {
 			boundary = nanoWindow
 		}
-		worker.reportedHR = worker.reportedHR / boundary
+		worker.Repo = worker.Repo / boundary
 		boundary = timeOnline
 		if timeOnline >= smallWindow {
 			boundary = smallWindow
@@ -803,16 +803,16 @@ func (r *RedisClient) CollectWorkersStats(nWindow,sWindow, lWindow time.Duration
 			online++
 		}
                 
-		reportedHashrate += worker.reportedHR
+		reportedHashrate += worker.Repo
 		currentHashrate += worker.HR
 		totalHashrate += worker.TotalHR
 		workers[id] = worker
-		slice[indd] = worker.reportedHR
+		//slice[indd] = worker.Repo
 		indd += 1
 	}
 	stats["workers"] = workers
 	//stats["okok"] = "weak"
-	stats["rph"] = slice
+	//stats["rph"] = slice
 	stats["workersTotal"] = len(workers)
 	stats["workersOnline"] = online
 	stats["workersOffline"] = offline
@@ -992,7 +992,7 @@ func convertWorkersStats(nwindow int64,window int64, raw *redis.ZSliceCmd, raw1 
 		}
 		
 		if score >= now-nwindow {
-			worker.reportedHR += share
+			worker.Repo += share
 		}
 
 		if worker.LastBeat < score {
@@ -1049,7 +1049,7 @@ func convertMinersStats(nwindow int64,window int64, raw *redis.ZSliceCmd) (int64
 		if timeOnline >= nwindow {
 			boundary = nwindow
 		}
-		miner.reportedHR = miner.reportedHR / boundary
+		miner.Repo = miner.Repo / boundary
 		boundary = timeOnline
 		if timeOnline >= window {
 			boundary = window
