@@ -981,9 +981,11 @@ func convertWorkersStats(nwindow int64,window int64, raw *redis.ZSliceCmd) map[s
 		worker := workers[id]
 		worker.IP = ips
 		if worker.sharea != nil	{
-			worker.sharea += 1 }
+			worker.sharea += 1
+		}
 		else {
-			worker.sharea = 1 }
+			worker.sharea = 1
+		}
 		// Add for large window
 		worker.TotalHR += share
 
