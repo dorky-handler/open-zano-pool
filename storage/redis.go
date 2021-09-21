@@ -74,7 +74,7 @@ type Miner struct {
 	Offline   bool  `json:"offline"`
 	startedAt int64
 	IP	  string `json:"ip"`
-	Sharea	*int64 `json:"sharea"`
+	Sharea int64 `json:"sharea"`
 }
 
 type Worker struct {
