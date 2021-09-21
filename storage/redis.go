@@ -748,7 +748,7 @@ func (r *RedisClient) CollectWorkersStats(nWindow,sWindow, lWindow time.Duration
 	cmds, err := tx.Exec(func() error {
 		tx.ZRemRangeByScore(r.formatKey("hashrate", login), "-inf", fmt.Sprint("(", now-largeWindow))
 		tx.ZRangeWithScores(r.formatKey("hashrate", login), 0, -1)
-		tx.ZCard(r.formatKey("hashrate", login), 0, -1)
+		tx.ZCard(r.formatKey("hashrate", login))
 		return nil
 	})
 
