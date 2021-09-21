@@ -1008,7 +1008,7 @@ func convertWorkersStats(nwindow int64,window int64, raw *redis.ZSliceCmd, raw1 
 	for _, v := range raw1.Val() {
 		parts := make([]string, 4)
 		parts = strings.Split(v.Member.(string), ":")
-		share, _ := strconv.ParseInt(parts[0], 10, 64)
+		//share, _ := strconv.ParseInt(parts[0], 10, 64)
 		id := parts[1]
 		worker := workers[id]
 		worker.Sharess += 1
