@@ -756,7 +756,7 @@ func (r *RedisClient) CollectWorkersStats(nWindow,sWindow, lWindow time.Duration
 		return nil, err
 	}
 	//fmt.Sprintf("%#v", cmds[2].(*redis.ZIntCmd).Val())
-	totalshares := cmds[2].(*redis.ZSliceCmd).Val()
+	totalshares := cmds[2].(*redis.IntCmd).Val()
 	totalHashrate := int64(0)
 	currentHashrate := int64(0)
 	reportedHashrate := int64(0)
