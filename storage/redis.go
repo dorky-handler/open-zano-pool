@@ -267,7 +267,7 @@ func (r *RedisClient) writeShare(tx *redis.Multi, ms, ts int64, login, id string
 }
 
 func (r *RedisClient) writeStaleShare(tx *redis.Multi, ms, ts int64, login, id string, diff int64, expire time.Duration) {
-	tx.ZAdd(r.formatKey("scount", login), redis.Z{Score: float64(ts), Member: join(diff, id, ms, ip)})
+	tx.ZAdd(r.formatKey("scount", login), redis.Z{Score: float64(ts), Member: join(diff, id, ms)})
 }
 
 
