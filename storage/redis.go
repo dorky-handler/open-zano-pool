@@ -1011,7 +1011,7 @@ func convertWorkersStats(nwindow int64,window int64, raw *redis.ZSliceCmd, raw1 
 		share, _ := strconv.ParseInt(parts[0], 10, 64)
 		id := parts[1]
 		worker := workers[id]
-		worker.Shares += 1
+		worker.Sharess += 1
 		workers[id] = worker
 	}
 	return workers
