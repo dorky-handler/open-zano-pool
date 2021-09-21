@@ -748,13 +748,14 @@ func (r *RedisClient) CollectWorkersStats(nWindow,sWindow, lWindow time.Duration
 	cmds, err := tx.Exec(func() error {
 		tx.ZRemRangeByScore(r.formatKey("hashrate", login), "-inf", fmt.Sprint("(", now-largeWindow))
 		tx.ZRangeWithScores(r.formatKey("hashrate", login), 0, -1)
+		tx.ZCard(r.formatKey("hashrate", login), 0, -1)
 		return nil
 	})
 
 	if err != nil {
 		return nil, err
 	}
-
+	totalshares :=  cmds[2].(*redis.ZSliceCmd)
 	totalHashrate := int64(0)
 	currentHashrate := int64(0)
 	reportedHashrate := int64(0)
@@ -811,7 +812,7 @@ func (r *RedisClient) CollectWorkersStats(nWindow,sWindow, lWindow time.Duration
 	stats["hashrate"] = totalHashrate
 	stats["currentHashrate"] = currentHashrate
 	stats["reportedHashrate"] = reportedHashrate
-	stats["tots"] = partstale
+	stats["tots"] = totalshares
 	return stats, nil
 }
 
