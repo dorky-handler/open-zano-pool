@@ -223,6 +223,16 @@ func (r *RedisClient) WriteBlock(login, id string, params []string, diff, roundD
 	if err != nil {
 		return false, err
 	}
+	
+	
+	tx := r._leadClient.Multi()
+	defer tx.Close()
+
+	ms := util.MakeTimestamp()
+	ts := ms / 1000
+
+	
+	
 	// Duplicate share, (nonce, powHash, mixDigest) pair exist
 	if exist {
 		_, err = tx.Exec(func() error {
@@ -233,12 +243,7 @@ func (r *RedisClient) WriteBlock(login, id string, params []string, diff, roundD
 	})
 		return true, nil
 	}
-	tx := r._leadClient.Multi()
-	defer tx.Close()
-
-	ms := util.MakeTimestamp()
-	ts := ms / 1000
-
+	
 	cmds, err := tx.Exec(func() error {
 		r.writeShare(tx, ms, ts, login, id, diff, window , ip)
 		tx.HSet(r.formatKey("stats"), "lastBlockFound", strconv.FormatInt(ts, 10))
