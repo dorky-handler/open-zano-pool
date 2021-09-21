@@ -811,7 +811,7 @@ func (r *RedisClient) CollectWorkersStats(nWindow,sWindow, lWindow time.Duration
 		indd += 1
 	}
 	stats["workers"] = workers
-	stats["okok"] = "weak"
+	//stats["okok"] = "weak"
 	stats["rph"] = slice
 	stats["workersTotal"] = len(workers)
 	stats["workersOnline"] = online
