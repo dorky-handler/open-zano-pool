@@ -75,6 +75,7 @@ type Miner struct {
 	startedAt int64
 	IP	  string `json:"ip"`
 	Sharea int64 `json:"sharea"`
+	Sharess int64 `json:"sharess"`
 }
 
 type Worker struct {
@@ -752,6 +753,7 @@ func (r *RedisClient) CollectWorkersStats(nWindow,sWindow, lWindow time.Duration
 		tx.ZCard(r.formatKey("hashrate", login))
 		tx.ZRemRangeByScore(r.formatKey("scount", login), "-inf", fmt.Sprint("(", now-largeWindow))
 		tx.ZCard(r.formatKey("scount", login))
+		tx.ZRangeWithScores(r.formatKey("scount", login), 0, -1)
 		return nil
 	})
 
@@ -766,7 +768,7 @@ func (r *RedisClient) CollectWorkersStats(nWindow,sWindow, lWindow time.Duration
 	reportedHashrate := int64(0)
 	online := int64(0)
 	offline := int64(0)
-	workers := convertWorkersStats(nanoWindow,smallWindow, cmds[1].(*redis.ZSliceCmd))
+	workers := convertWorkersStats(nanoWindow,smallWindow, cmds[1].(*redis.ZSliceCmd), cmds[5].(*redis.ZSliceCmd))
 	//partstale := getStale(nanoWindow,smallWindow, cmds[1].(*redis.ZSliceCmd))
 	var indd int = 0
         var slice = make([]int64,len(workers))
@@ -964,7 +966,7 @@ func getStale(nwindow int64,window int64, raw *redis.ZSliceCmd) []string {
 
 // Build per login workers's total shares map {'rig-1': 12345, 'rig-2': 6789, ...}
 // TS => diff, id, ms
-func convertWorkersStats(nwindow int64,window int64, raw *redis.ZSliceCmd) map[string]Worker {
+func convertWorkersStats(nwindow int64,window int64, raw *redis.ZSliceCmd, raw1 *redis.ZSliceCmd) map[string]Worker {
 	now := util.MakeTimestamp() / 1000
 	workers := make(map[string]Worker)
 
@@ -999,6 +1001,17 @@ func convertWorkersStats(nwindow int64,window int64, raw *redis.ZSliceCmd) map[s
 		if worker.startedAt > score || worker.startedAt == 0 {
 			worker.startedAt = score
 		}
+		workers[id] = worker
+	}
+	
+	
+	for _, v := range raw1.Val() {
+		parts := make([]string, 4)
+		parts = strings.Split(v.Member.(string), ":")
+		share, _ := strconv.ParseInt(parts[0], 10, 64)
+		id := parts[1]
+		worker := workers[id]
+		worker.Shares += 1
 		workers[id] = worker
 	}
 	return workers
