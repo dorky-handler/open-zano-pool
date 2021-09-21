@@ -267,7 +267,7 @@ func (r *RedisClient) writeShare(tx *redis.Multi, ms, ts int64, login, id string
 }
 
 func (r *RedisClient) writeStaleShare(tx *redis.Multi, ms, ts int64, login, id string, diff int64, expire time.Duration) {
-	tx.ZIncrBy(r.formatKey("scount"), 1, login)
+	tx.ZAdd(r.formatKey("scount", login), redis.Z{Score: float64(ts), Member: join(diff, id, ms, ip)})
 }
 
 
@@ -749,6 +749,8 @@ func (r *RedisClient) CollectWorkersStats(nWindow,sWindow, lWindow time.Duration
 		tx.ZRemRangeByScore(r.formatKey("hashrate", login), "-inf", fmt.Sprint("(", now-largeWindow))
 		tx.ZRangeWithScores(r.formatKey("hashrate", login), 0, -1)
 		tx.ZCard(r.formatKey("hashrate", login))
+		tx.ZRemRangeByScore(r.formatKey("scount", login), "-inf", fmt.Sprint("(", now-largeWindow))
+		tx.ZCard(r.formatKey("scount", login))
 		return nil
 	})
 
@@ -757,6 +759,7 @@ func (r *RedisClient) CollectWorkersStats(nWindow,sWindow, lWindow time.Duration
 	}
 	//fmt.Sprintf("%#v", cmds[2].(*redis.ZIntCmd).Val())
 	totalshares := cmds[2].(*redis.IntCmd).Val()
+	staleshares := cmds[4].(*redis.IntCmd).Val()
 	totalHashrate := int64(0)
 	currentHashrate := int64(0)
 	reportedHashrate := int64(0)
@@ -813,7 +816,8 @@ func (r *RedisClient) CollectWorkersStats(nWindow,sWindow, lWindow time.Duration
 	stats["hashrate"] = totalHashrate
 	stats["currentHashrate"] = currentHashrate
 	stats["reportedHashrate"] = reportedHashrate
-	stats["tots"] = totalshares
+	stats["totalshares"] = totalshares
+	stats["totalstales"] = staleshares
 	return stats, nil
 }
 
