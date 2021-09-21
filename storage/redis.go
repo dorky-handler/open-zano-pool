@@ -225,6 +225,12 @@ func (r *RedisClient) WriteBlock(login, id string, params []string, diff, roundD
 	}
 	// Duplicate share, (nonce, powHash, mixDigest) pair exist
 	if exist {
+		_, err = tx.Exec(func() error {
+	 	ms := util.MakeTimestamp()
+	        ts := ms / 1000
+		r.writeStaleShare(tx, ms, ts, login, id, diff, window)
+		return nil
+	})
 		return true, nil
 	}
 	tx := r._leadClient.Multi()
@@ -270,6 +276,7 @@ func (r *RedisClient) writeShare(tx *redis.Multi, ms, ts int64, login, id string
 
 func (r *RedisClient) writeStaleShare(tx *redis.Multi, ms, ts int64, login, id string, diff int64, expire time.Duration) {
 	tx.ZAdd(r.formatKey("scount", login), redis.Z{Score: float64(ts), Member: join(diff, id, ms)})
+	tx.Expire(r.formatKey("scount", login), expire) // Will delete hashrates for miners that gone
 }
 
 
