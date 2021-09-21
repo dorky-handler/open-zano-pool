@@ -770,8 +770,8 @@ func (r *RedisClient) CollectWorkersStats(nWindow,sWindow, lWindow time.Duration
 	offline := int64(0)
 	workers := convertWorkersStats(nanoWindow,smallWindow, cmds[1].(*redis.ZSliceCmd), cmds[5].(*redis.ZSliceCmd))
 	//partstale := getStale(nanoWindow,smallWindow, cmds[1].(*redis.ZSliceCmd))
-	var indd int = 0
-        var slice = make([]int64,len(workers))
+	//var indd int = 0
+       // var slice = make([]int64,len(workers))
 	for id, worker := range workers {
 		timeOnline := now - worker.startedAt
 		
