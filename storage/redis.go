@@ -808,7 +808,7 @@ func (r *RedisClient) CollectWorkersStats(nWindow,sWindow, lWindow time.Duration
 		totalHashrate += worker.TotalHR
 		workers[id] = worker
 		//slice[indd] = worker.Repo
-		indd += 1
+		//indd += 1
 	}
 	stats["workers"] = workers
 	//stats["okok"] = "weak"
