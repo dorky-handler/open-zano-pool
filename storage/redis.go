@@ -262,13 +262,14 @@ func (r *RedisClient) WriteBlock(login, id string, params []string, diff, roundD
 		for _, v := range sharesMap {
 			n, _ := strconv.ParseInt(v, 10, 64)
 			totalShares += n
-		}
+		}*/
 		hashHex := strings.Join(params, ":")
-		s := join(hashHex, ts, roundDiff, totalShares)*/
-		//cmd := r._leadClient.ZAdd(r.formatKey("blocks", "candidates"), redis.Z{Score: float64(height), Member: s})
+		//s := join(hashHex, ts, roundDiff, totalShares)
+		s := join(hashHex, ts, roundDiff, 10)
+		cmd := r._leadClient.ZAdd(r.formatKey("blocks", "candidates"), redis.Z{Score: float64(height), Member: s})
 		log.Printf(cmds[10].String())
-		//return false, cmd.Err()
-		return false, true
+		return false, cmd.Err()
+		//return false, true
 	}
 }
 
