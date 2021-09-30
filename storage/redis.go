@@ -268,7 +268,7 @@ func (r *RedisClient) WriteBlock(login, id string, params []string, diff, roundD
 		testvar := int64(2)
 		s := join(hashHex, ts, roundDiff, testvar)
 		cmd := r._leadClient.ZAdd(r.formatKey("blocks", "candidates"), redis.Z{Score: float64(height), Member: s})
-		log.Printf(cmds[10].String())
+		log.Printf("string is "+cmds[10].String())
 		return false, cmd.Err()
 		//return false, true
 	}
