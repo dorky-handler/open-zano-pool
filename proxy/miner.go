@@ -111,7 +111,7 @@ func (s *ProxyServer) processShare(login, id, ip string, t *BlockTemplate, param
 		if err != nil {
 			log.Println("Failed to insert share data into backend:", err)
 		}
-		
+		log.Println("Failed to insert block candidate into backend:")
 		exist1, err1 := s.backend.WriteBlock(login, id, block_params[:3], shareDiff, h.diff.Int64(), h.height, s.hashrateExpiration , ip)
 			if exist1 {
 				return true, false
