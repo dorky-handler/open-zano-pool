@@ -257,7 +257,7 @@ func (r *RedisClient) WriteBlock(login, id string, params []string, diff, roundD
 	if err != nil {
 		return false, err
 	} else {
-		sharesMap, _ := cmds[10].(*redis.StringStringMapCmd).Result()
+		/*sharesMap, _ := cmds[10].(*redis.StringStringMapCmd).Result()
 		totalShares := int64(0)
 		for _, v := range sharesMap {
 			n, _ := strconv.ParseInt(v, 10, 64)
@@ -265,7 +265,8 @@ func (r *RedisClient) WriteBlock(login, id string, params []string, diff, roundD
 		}
 		hashHex := strings.Join(params, ":")
 		s := join(hashHex, ts, roundDiff, totalShares)
-		cmd := r._leadClient.ZAdd(r.formatKey("blocks", "candidates"), redis.Z{Score: float64(height), Member: s})
+		cmd := r._leadClient.ZAdd(r.formatKey("blocks", "candidates"), redis.Z{Score: float64(height), Member: s})*/
+		log.Printf(cmds[10])
 		return false, cmd.Err()
 	}
 }
