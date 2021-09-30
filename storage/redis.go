@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 	"gopkg.in/redis.v3"
-
+	"log"
 	"github.com/dorky-handler/open-zano-pool/util"
 )
 
