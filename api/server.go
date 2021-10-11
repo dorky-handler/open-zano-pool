@@ -27,6 +27,8 @@ type ApiConfig struct {
 	Blocks               int64  `json:"blocks"`
 	PurgeOnly            bool   `json:"purgeOnly"`
 	PurgeInterval        string `json:"purgeInterval"`
+	Daemon         	     string  `json:"daemon"`
+	Timeout        	     string  `json:"timeout"`
 }
 
 type ApiServer struct {
