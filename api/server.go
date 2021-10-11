@@ -58,7 +58,7 @@ func NewApiServer(cfg *ApiConfig, backend *storage.RedisClient) *ApiServer {
 		hashrateWindow:      hashrateWindow,
 		hashrateLargeWindow: hashrateLargeWindow,
 		miners:              make(map[string]*Entry),
-		rpc: 		     rpc.NewRPCClient("BlockUnlocker", cfg.Daemon, cfg.Timeout)
+		rpc: 		     rpc.NewRPCClient("BlockUnlocker", cfg.Daemon, cfg.Timeout),
 	}
 }
 
