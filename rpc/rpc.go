@@ -149,7 +149,7 @@ type Tx struct {
 type JSONRpcResp struct {
 	Id     *json.RawMessage       `json:"id"`
 	Result *json.RawMessage       `json:"result"`
-	Result *json.RawMessage       `json:"result.blocks"`
+	Blocks *json.RawMessage       `json:"result.blocks"`
 	Error  map[string]interface{} `json:"error"`
 }
 
@@ -278,9 +278,9 @@ func (r *RPCClient) getBlockh(method string, params interface{}) (*GetBlockReply
 	}
 	if rpcResp.Result != nil {
 		var reply *GetBlockHeaderReply1
-		err = json.Unmarshal(*rpcResp.Result, &reply)
+		err = json.Unmarshal(*rpcResp.Blocks, &reply)
     var arr []string
-    errz := json.Unmarshal([]byte(*rpcResp.Result.Blocks), &arr.Array)
+    errz := json.Unmarshal([]byte(*rpcResp.Blocks), &arr.Array)
     out := new(GetBlockReply)
     out.Number = util.ToHexUint(arr[0].Height)
     out.Hash = "0x" + arr[0].Id
