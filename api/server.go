@@ -27,8 +27,6 @@ type ApiConfig struct {
 	Blocks               int64  `json:"blocks"`
 	PurgeOnly            bool   `json:"purgeOnly"`
 	PurgeInterval        string `json:"purgeInterval"`
-	Daemon         	     string  `json:"daemon"`
-	Timeout        	     string  `json:"timeout"`
 }
 
 type ApiServer struct {
@@ -41,7 +39,6 @@ type ApiServer struct {
 	miners              map[string]*Entry
 	minersMu            sync.RWMutex
 	statsIntv           time.Duration
-	rpc      	    *rpc.RPCClient
 }
 
 type Entry struct {
@@ -60,7 +57,6 @@ func NewApiServer(cfg *ApiConfig, backend *storage.RedisClient) *ApiServer {
 		hashrateWindow:      hashrateWindow,
 		hashrateLargeWindow: hashrateLargeWindow,
 		miners:              make(map[string]*Entry),
-		rpc: 		     rpc.NewRPCClient("BlockUnlocker", cfg.Daemon, cfg.Timeout),
 	}
 }
 
@@ -77,8 +73,7 @@ func (s *ApiServer) Start() {
 
 	purgeIntv := util.MustParseDuration(s.config.PurgeInterval)
 	purgeTimer := time.NewTimer(purgeIntv)
-	log.Printf("Set purge interval to %v", purgeIntv)
-
+	log.Printf("Set purge interval to %v", purgeInt
 	sort.Ints(s.config.LuckWindow)
 
 	if s.config.PurgeOnly {
