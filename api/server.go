@@ -10,7 +10,7 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
-
+	"github.com/dorky-handler/open-zano-pool/rpc"
 	"github.com/dorky-handler/open-zano-pool/storage"
 	"github.com/dorky-handler/open-zano-pool/util"
 )
