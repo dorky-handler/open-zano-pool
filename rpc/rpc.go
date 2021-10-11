@@ -257,6 +257,33 @@ func (r *RPCClient) getBlockBy(method string, params interface{}) (*GetBlockRepl
 	return nil, nil
 }
 
+
+
+func (r *RPCClient) getBlockh(method string, params interface{}) (*GetBlockReply, error) {
+	rpcResp, err := r.doPost(r.Url, "get_blocks_details", params)
+	if err != nil {
+		return nil, err
+	}
+	if rpcResp.Result != nil {
+		var reply *GetBlockHeaderReply
+		err = json.Unmarshal(*rpcResp.Result, &reply)
+
+    out := new(GetBlockReply)
+    out.Number = util.ToHexUint(reply.BlockHeader.Height)
+    out.Hash = "0x" + reply.BlockHeader.Hash
+    out.Nonce = util.ToHexUintNoPad(reply.BlockHeader.Nonce)
+    out.Miner = reply.BlockHeader.miner_text_info
+    out.Difficulty = reply.BlockHeader.Difficulty
+    out.Reward = reply.BlockHeader.Reward
+    out.OrphanStatus = reply.BlockHeader.OrphanStatus
+  	return out, err
+	}
+	return nil, nil
+}
+
+
+
+
 func (r *RPCClient) GetTxReceipt(hash string) (*TxReceipt, error) {
 	rpcResp, err := r.doPost(r.Url, "eth_getTransactionReceipt", []string{hash})
 	if err != nil {
