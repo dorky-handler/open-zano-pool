@@ -231,7 +231,7 @@ func (r *RPCClient) GetBlockByHeight(height int64) (*GetBlockReply, error) {
 
 
 func (r *RPCClient) Getblocks(height int64) (*GetBlockReply, error) {
-	cnt := 1
+	cnt := int64(1)
 	params := map[string]int64{"height": height,"count": cnt}
 	return r.getBlockh("get_blocks_details", params)
 }
@@ -278,7 +278,7 @@ func (r *RPCClient) getBlockh(method string, params interface{}) (*GetBlockReply
 	if rpcResp.Result != nil {
 		var reply *GetBlockHeaderReply1
 		err = json.Unmarshal(*rpcResp.Result, &reply)
-    arr := JsonType{}
+    var arr []string
     errz := json.Unmarshal([]byte(*rpcResp.Result.Blocks), &arr.Array)
     out := new(GetBlockReply)
     out.Number = util.ToHexUint(arr[0].Height)
