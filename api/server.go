@@ -8,9 +8,7 @@ import (
 	"sync"
 	"sync/atomic"
 	"time"
-
 	"github.com/gorilla/mux"
-	"github.com/dorky-handler/open-zano-pool/rpc"
 	"github.com/dorky-handler/open-zano-pool/storage"
 	"github.com/dorky-handler/open-zano-pool/util"
 )
@@ -73,7 +71,7 @@ func (s *ApiServer) Start() {
 
 	purgeIntv := util.MustParseDuration(s.config.PurgeInterval)
 	purgeTimer := time.NewTimer(purgeIntv)
-	log.Printf("Set purge interval to %v", purgeInt
+	log.Printf("Set purge interval to %v", purgeIntv)
 	sort.Ints(s.config.LuckWindow)
 
 	if s.config.PurgeOnly {
