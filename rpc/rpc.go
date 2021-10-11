@@ -55,12 +55,17 @@ type GetBlockHeader struct {
   Timestamp    uint64 `json:"timestamp"`
 }
 
+type GetBlockHeader1 struct {
+  Miner   string `json:"miner_text_info"`
+}
+
+
 type GetBlockHeaderReply struct {
   BlockHeader GetBlockHeader `json:"block_header"`  
 }
 
 type GetBlockHeaderReply1 struct {
-  Blocks GetBlockHeader `json:"blocks"`  
+  Blocks GetBlockHeader1 `json:"blocks"`  
 }
   
 type GetBlockReply struct {
@@ -69,8 +74,8 @@ type GetBlockReply struct {
 	Nonce        string   `json:"nonce"`
 	Miner        string   `json:"miner"`
 	Difficulty   string   `json:"difficulty"`
-  Reward       uint64   `json:"reward"`
-  OrphanStatus bool     `json:"orphan_status"`
+  	Reward       uint64   `json:"reward"`
+  	OrphanStatus bool     `json:"orphan_status"`
 	GasLimit     string   `json:"gasLimit"`
 	GasUsed      string   `json:"gasUsed"`
 	Transactions []Tx     `json:"transactions"`
@@ -281,7 +286,7 @@ func (r *RPCClient) getBlockh(method string, params interface{},params1 interfac
 	if rpcResp.Result != nil {
 		var reply *GetBlockHeaderReply1
 		err = json.Unmarshal(*rpcResp.Result, &reply)
-        out.Miner = reply.Blocks.Difficulty
+        out.Miner = reply.Blocks.Miner
 	}
 	rpcResp, err := r.doPost(r.Url, method, params1)
 	if err != nil {
