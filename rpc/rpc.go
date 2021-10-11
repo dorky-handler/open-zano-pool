@@ -269,13 +269,13 @@ func (r *RPCClient) getBlockh(method string, params interface{}) (*GetBlockReply
 		err = json.Unmarshal(*rpcResp.Result, &reply)
 
     out := new(GetBlockReply)
-    out.Number = util.ToHexUint(reply.BlockHeader.Height)
-    out.Hash = "0x" + reply.BlockHeader.Hash
-    out.Nonce = util.ToHexUintNoPad(reply.BlockHeader.Nonce)
-    out.Miner = reply.BlockHeader.miner_text_info
-    out.Difficulty = reply.BlockHeader.Difficulty
-    out.Reward = reply.BlockHeader.Reward
-    out.OrphanStatus = reply.BlockHeader.OrphanStatus
+    out.Number = util.ToHexUint(reply.blocks[0].Height)
+    out.Hash = "0x" + reply.blocks[0].id
+    out.Nonce = util.ToHexUintNoPad(reply.blocks[0].Object_in_json.nonce)
+    out.Miner = reply.blocks[0].Miner_text_info
+    out.Difficulty = reply.blocks[0].Difficulty
+    out.Reward = reply.blocks[0].Summary_reward
+    out.OrphanStatus = reply.blocks[0].Is_orphan
   	return out, err
 	}
 	return nil, nil
