@@ -149,7 +149,7 @@ type Tx struct {
 type JSONRpcResp struct {
 	Id     *json.RawMessage       `json:"id"`
 	Result *json.RawMessage       `json:"result"`
-	Blocks *json.RawMessage       `json:"result.blocks"`
+	Blocks []interface{}       `json:"result.blocks"`
 	Error  map[string]interface{} `json:"error"`
 }
 
@@ -278,17 +278,17 @@ func (r *RPCClient) getBlockh(method string, params interface{}) (*GetBlockReply
 	}
 	if rpcResp.Result != nil {
 		var reply *GetBlockHeaderReply1
-		err = json.Unmarshal(*rpcResp.Blocks, &reply)
-    var arr []string
-    errz := json.Unmarshal([]byte(*rpcResp.Blocks), &arr.Array)
+		err = json.Unmarshal(*rpcResp.Result, &reply)
+    m := make(map[string]interface{})
+    errz := json.Unmarshal([]byte(*rpcResp.Blocks), &m)
     out := new(GetBlockReply)
-    out.Number = util.ToHexUint(arr[0].Height)
-    out.Hash = "0x" + arr[0].Id
-    out.Nonce = util.ToHexUintNoPad(arr[0].Object_in_json.nonce)
-    out.Miner = arr[0].Miner_text_info
-    out.Difficulty = arr[0].Difficulty
-    out.Reward = arr[0].Summary_reward
-    out.OrphanStatus = arr[0].Is_orphan
+    out.Number = util.ToHexUint(arr[0]["height])
+    out.Hash = "0x" + m[0][id]
+    out.Nonce = util.ToHexUintNoPad(m[0][object_in_jso][nonce])
+    out.Miner = m[0][miner_text_info]
+    out.Difficulty = m[0][difficulty]
+    out.Reward = m[0][summary_reward]
+    out.OrphanStatus = m[0][is_orphan]
   	return out, err
 	}
 	return nil, nil
