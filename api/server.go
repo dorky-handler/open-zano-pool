@@ -183,29 +183,6 @@ func (s *ApiServer) StatsIndex(w http.ResponseWriter, r *http.Request) {
 		reply["immatureTotal"] = stats["immatureTotal"]
 		reply["candidatesTotal"] = stats["candidatesTotal"]
 	}
-	
-		block, err := s.rpc.Getblocks(1260216)
-			if err != nil {
-				log.Printf("Error while retrieving block %v from node: %v", height, err)
-				return nil, err
-			}
-			if block == nil {
-				return nil, fmt.Errorf("Error while retrieving block %v from node, wrong node height", height)
-			}
-
-			if s.rpc.cmatch(block, candidate) {
-				orphan = false
-				result.blocks++
-
-				err = u.handleBlock(block, candidate)
-				if err != nil {
-					u.halt = true
-					u.lastFail = err
-					return nil, err
-				}
-				log.Printf("Mature block %v with %v tx, hash: %v", candidate.Height, len(block.Transactions), candidate.Hash[0:10])
-			}
-
 	err = json.NewEncoder(w).Encode(reply)
 	if err != nil {
 		log.Println("Error serializing API response: ", err)
