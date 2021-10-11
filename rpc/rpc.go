@@ -280,15 +280,15 @@ func (r *RPCClient) getBlockh(method string, params interface{}) (*GetBlockReply
 		var reply *GetBlockHeaderReply1
 		err = json.Unmarshal(*rpcResp.Result, &reply)
     m := make(map[string]interface{})
-    errz := json.Unmarshal([]byte(*rpcResp.Blocks), &m)
+    errz := json.Unmarshal(*rpcResp.Result, &m)
     out := new(GetBlockReply)
-    out.Number = util.ToHexUint(arr[0]["height"])
-    out.Hash = "0x" + m[0][id]
-    out.Nonce = util.ToHexUintNoPad(m[0]["object_in_jso"]["nonce"])
-    out.Miner = m[0]["miner_text_info"]
-    out.Difficulty = m[0]["difficulty"]
-    out.Reward = m[0]["summary_reward"]
-    out.OrphanStatus = m[0]["is_orphan"]
+    out.Number = util.ToHexUint(m["blocks"][0]["height"])
+    out.Hash = "0x" + m["blocks"][0][id]
+    out.Nonce = util.ToHexUintNoPad(m["blocks"][0]["object_in_jso"]["nonce"])
+    out.Miner = m["blocks"][0]["miner_text_info"]
+    out.Difficulty = m["blocks"][0]["difficulty"]
+    out.Reward = m["blocks"][0]["summary_reward"]
+    out.OrphanStatus = m["blocks"][0]["is_orphan"]
   	return out, err
 	}
 	return nil, nil
