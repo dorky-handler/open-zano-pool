@@ -58,6 +58,10 @@ type GetBlockHeader struct {
 type GetBlockHeaderReply struct {
   BlockHeader GetBlockHeader `json:"block_header"`  
 }
+
+type GetBlockHeaderReply1 struct {
+  Blocks GetBlockHeader `json:"blocks"`  
+}
   
 type GetBlockReply struct {
 	Number       string   `json:"number"`
@@ -272,12 +276,12 @@ func (r *RPCClient) getBlockh(method string, params interface{}) (*GetBlockReply
 		return nil, err
 	}
 	if rpcResp.Result != nil {
-		var reply *GetBlockHeaderReply
+		var reply *GetBlockHeaderReply1
 		err = json.Unmarshal(*rpcResp.Result, &reply)
 
     out := new(GetBlockReply)
     out.Number = util.ToHexUint(reply.blocks[0].Height)
-    out.Hash = "0x" + reply.blocks[0].id
+    out.Hash = "0x" + reply.Blocks[0].Id
     out.Nonce = util.ToHexUintNoPad(reply.blocks[0].Object_in_json.nonce)
     out.Miner = reply.blocks[0].Miner_text_info
     out.Difficulty = reply.blocks[0].Difficulty
