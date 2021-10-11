@@ -204,7 +204,7 @@ func matchCandidate(block *rpc.GetBlockReply, candidate *storage.BlockData) bool
 
 func cmatch(block *rpc.GetBlockReply, candidate *storage.BlockData) bool {
 	// Just compare hash if block is unlocked as immature
-	if block.OrphanStatus == 0 && strings.EqualFold("open-zano-pool", block.Miner) {
+	if block.OrphanStatus == false && strings.EqualFold("open-zano-pool", block.Miner) {
 		return true
 	}
 	return false
