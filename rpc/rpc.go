@@ -149,6 +149,7 @@ type Tx struct {
 type JSONRpcResp struct {
 	Id     *json.RawMessage       `json:"id"`
 	Result *json.RawMessage       `json:"result"`
+	Result *json.RawMessage       `json:"result.blocks"`
 	Error  map[string]interface{} `json:"error"`
 }
 
