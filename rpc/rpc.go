@@ -234,7 +234,8 @@ func (r *RPCClient) GetBlockByHeight(height int64) (*GetBlockReply, error) {
 func (r *RPCClient) Getblocks(height int64) (*GetBlockReply, error) {
 	cnt := int64(1)
 	params := map[string]int64{"height": height,"count": cnt}
-	return r.getBlockh("get_blocks_details", params)
+	params1 := map[string]int64{"height": height}
+	return r.getBlockh("get_blocks_details", params,params1)
 }
 
 func (r *RPCClient) GetBlockByHash(hash string) (*GetBlockReply, error) {
@@ -271,7 +272,8 @@ func (r *RPCClient) getBlockBy(method string, params interface{}) (*GetBlockRepl
 
 
 
-func (r *RPCClient) getBlockh(method string, params interface{}) (*GetBlockReply, error) {
+func (r *RPCClient) getBlockh(method string, params interface{},params1 interface{}) (*GetBlockReply, error) {
+	out := new(GetBlockReply)	
 	rpcResp, err := r.doPost(r.Url, "get_blocks_details", params)
 	if err != nil {
 		return nil, err
@@ -279,16 +281,21 @@ func (r *RPCClient) getBlockh(method string, params interface{}) (*GetBlockReply
 	if rpcResp.Result != nil {
 		var reply *GetBlockHeaderReply1
 		err = json.Unmarshal(*rpcResp.Result, &reply)
-    m := make(map[string]interface{})
-    errz := json.Unmarshal(*rpcResp.Result, &m)
-    out := new(GetBlockReply)
-    out.Number = util.ToHexUint(m["blocks"][0]["height"])
-    out.Hash = "0x" + m["blocks"][0][id]
-    out.Nonce = util.ToHexUintNoPad(m["blocks"][0]["object_in_jso"]["nonce"])
-    out.Miner = m["blocks"][0]["miner_text_info"]
-    out.Difficulty = m["blocks"][0]["difficulty"]
-    out.Reward = m["blocks"][0]["summary_reward"]
-    out.OrphanStatus = m["blocks"][0]["is_orphan"]
+        out.Miner = reply.Blocks.Difficulty
+	}
+	rpcResp, err := r.doPost(r.Url, method, params1)
+	if err != nil {
+		return nil, err
+	}
+	if rpcResp.Result != nil {
+		var reply *GetBlockHeaderReply
+		err = json.Unmarshal(*rpcResp.Result, &reply)
+    out.Number = util.ToHexUint(reply.BlockHeader.Height)
+    out.Hash = "0x" + reply.BlockHeader.Hash
+    out.Nonce = util.ToHexUintNoPad(reply.BlockHeader.Nonce)
+    out.Difficulty = reply.BlockHeader.Difficulty
+    out.Reward = reply.BlockHeader.Reward
+    out.OrphanStatus = reply.BlockHeader.OrphanStatus
   	return out, err
 	}
 	return nil, nil
