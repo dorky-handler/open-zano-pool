@@ -39,6 +39,7 @@ type ApiServer struct {
 	miners              map[string]*Entry
 	minersMu            sync.RWMutex
 	statsIntv           time.Duration
+	rpc      	    *rpc.RPCClient
 }
 
 type Entry struct {
@@ -57,6 +58,7 @@ func NewApiServer(cfg *ApiConfig, backend *storage.RedisClient) *ApiServer {
 		hashrateWindow:      hashrateWindow,
 		hashrateLargeWindow: hashrateLargeWindow,
 		miners:              make(map[string]*Entry),
+		rpc: 		     rpc.NewRPCClient("BlockUnlocker", cfg.Daemon, cfg.Timeout)
 	}
 }
 
