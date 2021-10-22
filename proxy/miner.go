@@ -104,8 +104,13 @@ func (s *ProxyServer) processShare(login, id, ip string, t *BlockTemplate, param
 			log.Printf("Block found by miner %v@%v at height %d ,hash %v", login, ip, h.height,nonce)
 		}
 	} else {
+		hrt := int64(1271970)
+		blocker, err1 := s.rpc().Getblocks(height)
+		
+		winter := fmt.Sprintf("%T", blocker)
+		log.Printf("Block data by miner %v error %v", winter , err)
 		exist, err := s.backend.WriteShare(login, id, share_params[:3], shareDiff, h.height, s.hashrateExpiration , ip)
-		log.Printf("Share found by miner %v@%v at height %d ,hash %v", login, ip, h.height,nonce)
+		
 		if exist {
 			return true, false
 		}
