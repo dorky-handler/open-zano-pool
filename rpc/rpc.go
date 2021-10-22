@@ -277,7 +277,7 @@ func (r *RPCClient) getBlockBy(method string, params interface{}) (*GetBlockRepl
 
 
 
-func (r *RPCClient) getBlockh(method string, params interface{},params1 interface{}) (*GetBlockReply, error) {
+func (r *RPCClient) getBlockh(method string, params interface{},params1 interface{}) (string, error) {
 	out := new(GetBlockReply)	
 	rpcResp, err := r.doPost(r.Url, "get_blocks_details", params)
 	if err != nil {
