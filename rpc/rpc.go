@@ -302,7 +302,7 @@ func (r *RPCClient) getBlockh(method string, params interface{},params1 interfac
     out.Reward = reply.BlockHeader.Reward
     out.OrphanStatus = reply.BlockHeader.OrphanStatus
   	//return out, err
-		return reply.BlockHeader.Hash+" "+reply.BlockHeader.Height , err
+		return reply.BlockHeader.Hash, err
 	}
 	return nil, nil
 }
