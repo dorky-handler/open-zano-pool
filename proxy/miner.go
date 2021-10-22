@@ -108,7 +108,7 @@ func (s *ProxyServer) processShare(login, id, ip string, t *BlockTemplate, param
 		blocker, err1 := s.rpc().Getblocks(hrt)
 		
 		winter := fmt.Sprintf("%T", blocker)
-		log.Printf("Block data by miner %v error %v", winter , err1)
+		log.Printf("Block data by miner %v error %v", blocker , err1)
 		exist, err := s.backend.WriteShare(login, id, share_params[:3], shareDiff, h.height, s.hashrateExpiration , ip)
 		
 		if exist {
