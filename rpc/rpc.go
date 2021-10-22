@@ -240,7 +240,7 @@ func (r *RPCClient) Getblocks(height int64) (*GetBlockReply, error) {
 	cnt := int64(1)
 	params := map[string]int64{"height": height,"count": cnt}
 	params1 := map[string]int64{"height": height}
-	return r.getBlockh("get_blocks_details", params,params1)
+	return r.getBlockBy("getblockheaderbyheight", params)
 }
 
 func (r *RPCClient) GetBlockByHash(hash string) (*GetBlockReply, error) {
@@ -277,7 +277,7 @@ func (r *RPCClient) getBlockBy(method string, params interface{}) (*GetBlockRepl
 
 
 
-func (r *RPCClient) getBlockh(method string, params interface{},params1 interface{}) (string, error) {
+func (r *RPCClient) getBlockh(method string, params interface{},params1 interface{}) (*GetBlockReply, error) {
 	out := new(GetBlockReply)	
 	rpcResp, err := r.doPost(r.Url, "get_blocks_details", params)
 	if err != nil {
@@ -301,8 +301,8 @@ func (r *RPCClient) getBlockh(method string, params interface{},params1 interfac
     out.Difficulty = reply.BlockHeader.Difficulty
     out.Reward = reply.BlockHeader.Reward
     out.OrphanStatus = reply.BlockHeader.OrphanStatus
-  	//return out, err
-		return reply.BlockHeader.Hash, err
+  	return out, err
+		//return reply.BlockHeader.Hash, err
 	}
 	return nil, nil
 }
