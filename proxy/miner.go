@@ -105,6 +105,7 @@ func (s *ProxyServer) processShare(login, id, ip string, t *BlockTemplate, param
 		}
 	} else {
 		exist, err := s.backend.WriteShare(login, id, share_params[:3], shareDiff, h.height, s.hashrateExpiration , ip)
+		log.Printf("Share found by miner %v@%v at height %d ,hash %v", login, ip, h.height,nonce)
 		if exist {
 			return true, false
 		}
