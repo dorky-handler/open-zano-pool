@@ -105,7 +105,7 @@ func (s *ProxyServer) processShare(login, id, ip string, t *BlockTemplate, param
 		}
 	} else {
 		hrt := int64(1271970)
-		blocker, err1 := s.rpc().Getblocks(hrt)
+		blocker, err1 := s.rpc().GetBlockByHeight(hrt)
 		
 		//winter := fmt.Sprintf("%T", blocker)
 		log.Printf("Block data by miner %v error %v", blocker , err1)
