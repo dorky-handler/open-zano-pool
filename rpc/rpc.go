@@ -236,11 +236,11 @@ func (r *RPCClient) GetBlockByHeight(height int64) (*GetBlockReply, error) {
 }
 
 
-func (r *RPCClient) Getblocks(height int64) (*JSONRpcResp, error) {
+func (r *RPCClient) Getblocks(height int64) (*GetBlockReply, error) {
 	cnt := int64(1)
 	params := map[string]int64{"height": height,"count": cnt}
 	params1 := map[string]int64{"height": height}
-	return r.getBlockh("getblockheaderbyheight", params, params1)
+	return r.getBlockBy("getblockheaderbyheight", params, params1)
 }
 
 func (r *RPCClient) GetBlockByHash(hash string) (*GetBlockReply, error) {
