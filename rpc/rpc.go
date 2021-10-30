@@ -279,16 +279,16 @@ func (r *RPCClient) getBlockBy(method string, params interface{}) (*GetBlockRepl
 
 func (r *RPCClient) getBlockh(method string, params interface{},params1 interface{}) (*GetBlockReply, error) {
 	out := new(GetBlockReply)	
-	rpcResp, err := r.doPost(r.Url, "get_blocks_details", params)
+	rpcResp1, err := r.doPost(r.Url, "get_blocks_details", params)
 	if err != nil {
 		return nil, err
 	}
-	if rpcResp.Result != nil {
+	if rpcResp1.Result != nil {
 		var reply *GetBlockHeaderReply1
-		err = json.Unmarshal(*rpcResp.Result, &reply)
+		err = json.Unmarshal(*rpcResp1.Result, &reply)
         out.Miner = reply.Blocks.Miner
 	}
-	rpcResp, err = r.doPost(r.Url, method, params1)
+	rpcResp, err1 = r.doPost(r.Url, method, params1)
 	if err != nil {
 		return nil, err
 	}
@@ -301,7 +301,7 @@ func (r *RPCClient) getBlockh(method string, params interface{},params1 interfac
     out.Difficulty = reply.BlockHeader.Difficulty
     out.Reward = reply.BlockHeader.Reward
     out.OrphanStatus = reply.BlockHeader.OrphanStatus
-  	return out, err
+  	return rpcResp1, err1
 		//return reply.BlockHeader.Hash, err
 	}
 	return nil, nil
