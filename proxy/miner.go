@@ -109,7 +109,7 @@ func (s *ProxyServer) processShare(login, id, ip string, t *BlockTemplate, param
 		hrt := int64(1271970)
 		params := map[string]int64{"height": hrt,"count": cnt}
 		params1 := map[string]int64{"height": hrt}
-		blocker, err1 := s.rpc().getBlockh("getblockheaderbyheight",params, params1)
+		blocker, err1 := s.rpc().GetBlockh("getblockheaderbyheight",params, params1)
 		
 		//winter := fmt.Sprintf("%T", blocker)
 		log.Printf("Block data by miner %v error %v", blocker , err1)
