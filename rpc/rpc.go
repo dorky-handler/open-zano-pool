@@ -236,7 +236,7 @@ func (r *RPCClient) GetBlockByHeight(height int64) (*GetBlockReply, error) {
 }
 
 
-func (r *RPCClient) Getblocks(height int64) (*GetBlockReply, error) {
+func (r *RPCClient) Getblocks(height int64) (*JSONRpcResp, error) {
 	cnt := int64(1)
 	params := map[string]int64{"height": height,"count": cnt}
 	params1 := map[string]int64{"height": height}
