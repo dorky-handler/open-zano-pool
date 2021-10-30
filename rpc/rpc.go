@@ -288,7 +288,7 @@ func (r *RPCClient) getBlockh(method string, params interface{},params1 interfac
 		err = json.Unmarshal(*rpcResp1.Result, &reply)
         out.Miner = reply.Blocks.Miner
 	}
-	rpcResp, err1 = r.doPost(r.Url, method, params1)
+	rpcResp, err1 := r.doPost(r.Url, method, params1)
 	if err != nil {
 		return nil, err
 	}
