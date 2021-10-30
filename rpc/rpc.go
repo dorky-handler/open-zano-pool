@@ -281,7 +281,7 @@ func (r *RPCClient) GetBlockh(method string, params interface{},params1 interfac
 	out := new(GetBlockReply)	
 	rpcResp1, err := r.doPost(r.Url, "get_blocks_details", params)
 	if err != nil {
-		return nil, err
+		return "error1", err
 	}
 	if rpcResp1.Result != nil {
 		var reply *GetBlockHeaderReply1
@@ -289,19 +289,19 @@ func (r *RPCClient) GetBlockh(method string, params interface{},params1 interfac
         out.Miner = reply.Blocks.Miner
 	}
 	rpcResp, err1 := r.doPost(r.Url, method, params1)
-	if err != nil {
-		return nil, err
+	if err1 != nil {
+		return "error2", err1
 	}
 	if rpcResp.Result != nil {
 		var reply *GetBlockHeaderReply
-		err = json.Unmarshal(*rpcResp.Result, &reply)
+		err1 = json.Unmarshal(*rpcResp.Result, &reply)
     out.Number = util.ToHexUint(reply.BlockHeader.Height)
     out.Hash = "0x" + reply.BlockHeader.Hash
     out.Nonce = util.ToHexUintNoPad(reply.BlockHeader.Nonce)
     out.Difficulty = reply.BlockHeader.Difficulty
     out.Reward = reply.BlockHeader.Reward
     out.OrphanStatus = reply.BlockHeader.OrphanStatus
-  	return rpcResp1, err1
+  	return rpcResp1, err
 		//return reply.BlockHeader.Hash, err
 	}
 	return nil, nil
