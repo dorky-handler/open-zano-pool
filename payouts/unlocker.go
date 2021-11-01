@@ -117,7 +117,15 @@ func (u *BlockUnlocker) unlockCandidates(candidates []*storage.BlockData) (*Unlo
 				continue
 			}
 
+			label1:
+			
 			block, err := u.rpc.GetBlockByHeight(height)
+			
+			if(!strings.EqualFold(candidate.Hash, block.Hash))
+			{
+				goto label1	
+			}
+			
 			if err != nil {
 				log.Printf("Error while retrieving block %v from node: %v", height, err)
 				return nil, err
