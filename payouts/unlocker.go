@@ -117,7 +117,7 @@ func (u *BlockUnlocker) unlockCandidates(candidates []*storage.BlockData) (*Unlo
 				continue
 			}
 
-			block, err := u.rpc.Getblocks(height)
+			block, err := u.rpc.GetBlockByHeight(height)
 			if err != nil {
 				log.Printf("Error while retrieving block %v from node: %v", height, err)
 				return nil, err
@@ -204,7 +204,7 @@ func matchCandidate(block *rpc.GetBlockReply, candidate *storage.BlockData) bool
 
 func cmatch(block *rpc.GetBlockReply, candidate *storage.BlockData) bool {
 	// Just compare hash if block is unlocked as immature
-	if block.OrphanStatus == false && strings.EqualFold("open-zano-pool", block.Miner) {
+	if block.OrphanStatus == false {
 		return true
 	}
 	return false
