@@ -246,6 +246,10 @@ func handleUncle(height int64, uncle *rpc.GetBlockReply, candidate *storage.Bloc
 }
 
 func (u *BlockUnlocker) unlockPendingBlocks() {
+	
+	log.Printf("Starting Unlock")
+	
+	
 	if u.halt {
 		log.Println("Unlocking suspended due to last critical error:", u.lastFail)
 		return
