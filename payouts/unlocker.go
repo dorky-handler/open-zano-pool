@@ -122,6 +122,7 @@ func (u *BlockUnlocker) unlockCandidates(candidates []*storage.BlockData) (*Unlo
 			block, err := u.rpc.GetBlockByHeight(height)
 			
 			if(!strings.EqualFold(candidate.Hash, block.Hash)) {
+				log.Printf("Enterring loop")
 				goto label1	
 			}
 			
