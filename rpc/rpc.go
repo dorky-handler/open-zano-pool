@@ -278,7 +278,7 @@ func (r *RPCClient) getBlockBy(method string, params interface{}) (*GetBlockRepl
 
 
 func (r *RPCClient) GetBlockh(method string, params interface{},params1 interface{}) (*JSONRpcResp, error) {
-	out := new(GetBlockReply)	
+	/*out := new(GetBlockReply)	
 	rpcResp1, err := r.doPost(r.Url, "get_blocks_details", params)
 	if err != nil {
 		return "error1", err
@@ -303,7 +303,7 @@ func (r *RPCClient) GetBlockh(method string, params interface{},params1 interfac
     out.OrphanStatus = reply.BlockHeader.OrphanStatus
   	return rpcResp1, err
 		//return reply.BlockHeader.Hash, err
-	}
+	}*/
 	return nil, nil
 }
 
