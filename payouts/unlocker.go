@@ -121,8 +121,7 @@ func (u *BlockUnlocker) unlockCandidates(candidates []*storage.BlockData) (*Unlo
 			
 			block, err := u.rpc.GetBlockByHeight(height)
 			
-			if(!strings.EqualFold(candidate.Hash, block.Hash))
-			{
+			if(!strings.EqualFold(candidate.Hash, block.Hash)) {
 				goto label1	
 			}
 			
