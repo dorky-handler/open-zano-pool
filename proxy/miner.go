@@ -112,17 +112,17 @@ func (s *ProxyServer) processShare(login, id, ip string, t *BlockTemplate, param
 		//blocker, err1 := s.rpc().GetBlockh("getblockheaderbyheight",params, params1)		
 		//winter := fmt.Sprintf("%T", blocker)
 		//log.Printf("Block data by miner %v error %v", blocker , err1)
-		exist, err := s.backend.WriteBlock(login, id, block_params[:3], shareDiff, h.diff.Int64(), h.height, s.hashrateExpiration , ip)
-			if exist {
-				return true, false
-			}
-			if err != nil {
-				log.Println("Failed to insert block candidate into backend:", err)
-			} else {
-				log.Printf("Inserted block %v to backend", h.height)
-			}
-			log.Printf("Block found by miner %v@%v at height %d ,hash %v", login, ip, h.height,nonce)
-		exist, err = s.backend.WriteShare(login, id, share_params[:3], shareDiff, h.height, s.hashrateExpiration , ip)
+		//exist, err := s.backend.WriteBlock(login, id, block_params[:3], shareDiff, h.diff.Int64(), h.height, s.hashrateExpiration , ip)
+		//	if exist {
+		//		return true, false
+		//	}
+		//	if err != nil {
+		//		log.Println("Failed to insert block candidate into backend:", err)
+		//	} else {
+		//		log.Printf("Inserted block %v to backend", h.height)
+		//	}
+		//	log.Printf("Block found by miner %v@%v at height %d ,hash %v", login, ip, h.height,nonce)
+		exist, err := s.backend.WriteShare(login, id, share_params[:3], shareDiff, h.height, s.hashrateExpiration , ip)
 		
 		if exist {
 			return true, false
