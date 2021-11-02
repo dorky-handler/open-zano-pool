@@ -6,6 +6,7 @@ import (
 
 	"github.com/dorky-handler/open-zano-pool/rpc"
 	"github.com/dorky-handler/open-zano-pool/util"
+	"github.com/itchyny/base58-go"
 )
 
 // Allow only lowercase hexadecimal with 0x prefix
@@ -23,6 +24,13 @@ func (s *ProxyServer) handleLoginRPC(cs *Session, params []string, id string) (b
 	if !util.IsValidZanoAddress(login) {
 		return false, &ErrorReply{Code: -1, Message: "Invalid login"}
 	}
+	
+	encoding := base58.BitcoinEncoding
+	decoded, err := encoding.Decode(encoded)
+	if err != nil {
+		return false, &ErrorReply{Code: -1, Message: "Invalid Wallet address"}
+	}
+	
 	if !s.policy.ApplyLoginPolicy(login, cs.ip) {
 		return false, &ErrorReply{Code: -1, Message: "You are blacklisted"}
 	}
