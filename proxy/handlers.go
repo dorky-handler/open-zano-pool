@@ -26,7 +26,7 @@ func (s *ProxyServer) handleLoginRPC(cs *Session, params []string, id string) (b
 	}
 	
 	encoding := base58.BitcoinEncoding
-	decoded, err := encoding.Decode(encoded)
+	decoded, err := encoding.Decode(login)
 	if err != nil {
 		return false, &ErrorReply{Code: -1, Message: "Invalid Wallet address"}
 	}
