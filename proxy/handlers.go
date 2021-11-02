@@ -6,7 +6,7 @@ import (
 
 	"github.com/dorky-handler/open-zano-pool/rpc"
 	"github.com/dorky-handler/open-zano-pool/util"
-	"github.com/itchyny/base58-go"
+	"github.com/shengdoushi/base58"
 )
 
 // Allow only lowercase hexadecimal with 0x prefix
@@ -24,10 +24,11 @@ func (s *ProxyServer) handleLoginRPC(cs *Session, params []string, id string) (b
 	if !util.IsValidZanoAddress(login) {
 		return false, &ErrorReply{Code: -1, Message: "Invalid login"}
 	}
+	myAlphabet := base58.BitcoinAlphabet
 	loginarray := []byte(login)
-	encoding := base58.BitcoinEncoding
-	shsh, err := encoding.Decode(loginarray)
-	log.Printf("Malformed wallet string error is %v and %v",shsh,err)
+	var encodedString string = base58.Encode(loginarray, myAlphabet)
+	decodedBytes, err := base58.Decode(encodedString, myAlphabet)
+	log.Printf("Malformed wallet string error is %v and %v",decodedBytes,err)
 	if err != nil {
 		return false, &ErrorReply{Code: -1, Message: "Invalid Wallet address"}
 	}
