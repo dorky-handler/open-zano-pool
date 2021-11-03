@@ -350,18 +350,18 @@ func (r *RPCClient) GetBalance() (*big.Int, error) {
 }
 
 
-func (r *RPCClient) WalletCheck()(params []string) (*big.Int, error) {
-	tempstrr:=
-	rpcResp, err := r.doPost(r.Url, "split_integrated_address", nil)
+func (r *RPCClient) WalletCheck()(params []string) (bool, error) {
+	tempstrr := map[string]string{"integrated_address": params}
+	rpcResp, err := r.doPost(r.Url, "split_integrated_address", tempstrr)
 	if err != nil {
-		return nil, err
+		return false, err
 	}
 	var reply map[string]uint64
 	err = json.Unmarshal(*rpcResp.Result, &reply)
 	if err != nil {
-		return nil, err
+		return false, err
 	}
-	return new(big.Int).SetUint64(reply["unlocked_balance"]), err
+	return true, err
 }
 
 
