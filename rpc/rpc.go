@@ -354,18 +354,18 @@ func (r *RPCClient) GetBalance() (*big.Int, error) {
 }
 
 
-func (r *RPCClient) WalletCheck()(params []string) (bool, error) {
+func (r *RPCClient) WalletCheck()(params []string) (bool) {
 	tempstrr := map[string]string{"integrated_address": params}
 	rpcResp, err := r.doPost(r.Url, "split_integrated_address", tempstrr)
 	if err != nil {
 		return false, err
 	}
-	var reply map[string]uint64
+	var reply *WalletReply
 	err = json.Unmarshal(*rpcResp.Result, &reply)
-	if err != nil {
-		return false, err
+	if reply.Addr == params {
+		return true
 	}
-	return true, err
+	return false
 }
 
 
