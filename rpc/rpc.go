@@ -356,7 +356,7 @@ func (r *RPCClient) GetBalance() (*big.Int, error) {
 
 func (r *RPCClient) WalletCheck()(params []string) (bool) {
 	tempstrr := map[string]string{"integrated_address": params}
-	rpcResp, err := r.doPost(r.Url, "split_integrated_address", tempstrr)
+	rpcResp, err := r.doPost(r.Wurl, "split_integrated_address", tempstrr)
 	if err != nil {
 		return false
 	}
