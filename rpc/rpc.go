@@ -349,6 +349,24 @@ func (r *RPCClient) GetBalance() (*big.Int, error) {
 	return new(big.Int).SetUint64(reply["unlocked_balance"]), err
 }
 
+
+func (r *RPCClient) WalletCheck()(params []string) (*big.Int, error) {
+	tempstrr:=
+	rpcResp, err := r.doPost(r.Url, "split_integrated_address", nil)
+	if err != nil {
+		return nil, err
+	}
+	var reply map[string]uint64
+	err = json.Unmarshal(*rpcResp.Result, &reply)
+	if err != nil {
+		return nil, err
+	}
+	return new(big.Int).SetUint64(reply["unlocked_balance"]), err
+}
+
+
+
+
 func (r *RPCClient) Sign(from string, s string) (string, error) {
 	hash := sha256.Sum256([]byte(s))
 	rpcResp, err := r.doPost(r.Url, "eth_sign", []string{from, hexutil.Encode(hash[:])})
