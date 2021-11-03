@@ -358,7 +358,7 @@ func (r *RPCClient) WalletCheck()(params []string) (bool) {
 	tempstrr := map[string]string{"integrated_address": params}
 	rpcResp, err := r.doPost(r.Url, "split_integrated_address", tempstrr)
 	if err != nil {
-		return false, err
+		return false
 	}
 	var reply *WalletReply
 	err = json.Unmarshal(*rpcResp.Result, &reply)
