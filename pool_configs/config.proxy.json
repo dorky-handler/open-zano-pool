@@ -56,11 +56,13 @@
 		{
 			"name": "main",
       "url": "http://localhost:11211/json_rpc",
+			"wurl": "http://localhost:11212/json_rpc",
 			"timeout": "10s"
 		},
 		{
 			"name": "backup",
       "url": "http://localhost:11211/json_rpc",
+			"wurl": "http://localhost:11212/json_rpc",
 			"timeout": "10s"
 		}
 	],
