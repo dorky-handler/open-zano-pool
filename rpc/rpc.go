@@ -104,6 +104,10 @@ type SubmitBlockReply struct {
   Status string `json:"status"`
 }
 
+type WalletReply struct {
+  Addr string `json:"standard_address"`
+}
+
 const receiptStatusSuccessful = "0x1"
 
 type TransferDestination struct {
