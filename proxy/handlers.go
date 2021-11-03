@@ -25,10 +25,9 @@ func (s *ProxyServer) handleLoginRPC(cs *Session, params []string, id string) (b
 	}
 	
 	
-	rpc_wallet := rpc.NewRPCClient("PayoutsWallet", cfg.Wallet, cfg.Timeout)
-	 _, err := rpc_wallet.GetBalance()
+	 checkvar := rpc.WalletCheck(login)
 	
-	if err != nil {
+	if !checkvar {
 		return false, &ErrorReply{Code: -1, Message: "Invalid Wallet address"}
 	}
 	
