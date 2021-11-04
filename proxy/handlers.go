@@ -26,7 +26,7 @@ func (s *ProxyServer) handleLoginRPC(cs *Session, params []string, id string) (b
 	
 	
 	checkvar := s.rpc().WalletCheck(login)
-	
+	log.Printf("Bool is%v", checkvar)
 	if !checkvar {
 		return false, &ErrorReply{Code: -1, Message: "Invalid Wallet address"}
 	}
