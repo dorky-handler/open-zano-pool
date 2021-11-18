@@ -90,6 +90,7 @@ func (s *ProxyServer) handleTCPClient(cs *Session) error {
 
 		if len(data) > 1 {
 			var req StratumReq
+			log.Printf("Data is: %v", data)
 			err = json.Unmarshal(data, &req)
 			if err != nil {
 				s.policy.ApplyMalformedPolicy(cs.ip)
