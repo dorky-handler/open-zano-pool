@@ -13,6 +13,71 @@ import (
 	"github.com/dorky-handler/open-zano-pool/util"
 )
 
+type myConn struct {
+	cn      net.Conn
+	r       *bufio.Reader
+	local   net.Addr
+	remote  net.Addr
+	proxied bool
+}
+
+func NewProxyConn(cn net.Conn) (net.Conn, error) {
+	c := &myConn{cn: cn, r: bufio.NewReader(cn)}
+	if err := c.Init(); err != nil {
+		return nil, err
+	}
+	return c, nil
+}
+
+func (c *myConn) Close() error                { return c.cn.Close() }
+func (c *myConn) Write(b []byte) (int, error) { return c.cn.Write(b) }
+
+func (c *myConn) SetDeadline(t time.Time) error      { return c.cn.SetDeadline(t) }
+func (c *myConn) SetReadDeadline(t time.Time) error  { return c.cn.SetReadDeadline(t) }
+func (c *myConn) SetWriteDeadline(t time.Time) error { return c.cn.SetWriteDeadline(t) }
+
+func (c *myConn) LocalAddr() net.Addr  { return c.local }
+func (c *myConn) RemoteAddr() net.Addr { return c.remote }
+
+func (c *myConn) Read(b []byte) (int, error) { return c.r.Read(b) }
+
+func (c *myConn) Init() error {
+	buf, err := c.r.Peek(5)
+	if err != io.EOF && err != nil {
+		return err
+	}
+
+	if err == nil && bytes.Equal([]byte(`PROXY`), buf) {
+		c.proxied = true
+		proxyLine, err := c.r.ReadString('\n')
+		if err != nil {
+			return err
+		}
+		fields := strings.Fields(proxyLine)
+		c.remote = &addr{net.JoinHostPort(fields[2], fields[4])}
+		c.local = &addr{net.JoinHostPort(fields[3], fields[5])}
+	} else {
+		c.local = c.cn.LocalAddr()
+		c.remote = c.cn.RemoteAddr()
+	}
+
+	return nil
+}
+
+func (c *myConn) String() string {
+	if c.proxied {
+		return fmt.Sprintf("proxied connection %v", c.cn)
+	}
+	return fmt.Sprintf("%v", c.cn)
+}
+
+type addr struct{ hp string }
+
+func (a addr) Network() string { return "tcp" }
+
+func (a addr) String() string  { return a.hp }
+
+
 const (
 	MaxReqSize = 1024
 )
@@ -47,14 +112,21 @@ func (s *ProxyServer) ListenTCP() {
 		if err != nil {
 			continue
 		}
-		ip, _, _ := net.SplitHostPort(conn.RemoteAddr().String())
+		pcn, err1 := NewProxyConn(conn)
+
+		if err1 != nil {
+			log.Println("NewProxyConn():", err1)
+			continue
+		}
+		
+		ip, _, _ := net.SplitHostPort(pcn.RemoteAddr().String())
 
 		if s.policy.IsBanned(ip) || !s.policy.ApplyLimitPolicy(ip) {
-			conn.Close()
+			pcn.Close()
 			continue
 		}
 		n += 1
-		cs := &Session{conn: conn, ip: ip}
+		cs := &Session{conn: pcn, ip: ip}
 
 		accept <- n
 		go func(cs *Session) {
