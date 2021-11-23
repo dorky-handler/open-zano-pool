@@ -7,6 +7,8 @@ import (
 	"errors"
 	"io"
 	"log"
+	"bytes"
+	"strings"
 	"net"
 	"time"
 	"fmt"
