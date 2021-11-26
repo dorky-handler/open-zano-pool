@@ -44,6 +44,12 @@ type Entry struct {
 	updatedAt int64
 }
 
+
+type wallstruct struct {
+	Wall string
+	Pay int64
+}
+
 func NewApiServer(cfg *ApiConfig, backend *storage.RedisClient) *ApiServer {
 	hashrateWindow := util.MustParseDuration(cfg.HashrateWindow)
 	newWindow := util.MustParseDuration(cfg.NewWindow)
@@ -111,6 +117,7 @@ func (s *ApiServer) listen() {
   r.HandleFunc("/api/accounts/{login:iZ[0-9a-zA-Z]{95,}$}", s.AccountIndex)
   r.HandleFunc("/api/accounts/{login:aZx[0-9a-zA-Z]{95,}$}", s.AccountIndex)
   r.HandleFunc("/api/accounts/{login:aiZX[0-9a-zA-Z]{95,}$}", s.AccountIndex)
+	r.HandleFunc("/api/setpay", s.Setpay)
 	r.NotFoundHandler = http.HandlerFunc(notFound)
 	err := http.ListenAndServe(s.config.Listen, r)
 	if err != nil {
@@ -152,6 +159,31 @@ func (s *ApiServer) collectStats() {
 	s.stats.Store(stats)
 	log.Printf("Stats collection finished %s", time.Since(start))
 }
+
+
+func (s *ApiServer) Setpay(w http.ResponseWriter, r *http.Request) {
+	
+	if r.Method == "POST" {
+		var wlst wallstruct
+		decoder := json.NewDecoder(r.Body)
+		err := decoder.Decode(&wlst)
+
+		if err != nil {
+			panic(err)
+		}
+		defer r.Body.Close()
+		result, err := s.backend.SetThreshold(wlst.Wall,wlst.Pay)
+		//fmt.Printf("Got %s age %d club %s\n", tempPlayer.Name, tempPlayer.Age, tempPlayer.Club)
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(wlst)
+	} else {
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		w.Write([]byte("Method not allowed."))
+	}
+	
+}
+
+
 
 func (s *ApiServer) StatsIndex(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
