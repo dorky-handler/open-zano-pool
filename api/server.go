@@ -172,10 +172,15 @@ func (s *ApiServer) Setpay(w http.ResponseWriter, r *http.Request) {
 			panic(err)
 		}
 		defer r.Body.Close()
-		result, err := s.backend.SetThreshold(wlst.Wall,wlst.Pay)
+		_, err1 := s.backend.SetThreshold(wlst.Wall,wlst.Pay)
 		//fmt.Printf("Got %s age %d club %s\n", tempPlayer.Name, tempPlayer.Age, tempPlayer.Club)
+		if err1 != nil {
+			w.WriteHeader(http.StatusOK)
+			w.Write([]byte("Error please try again."))
+		} else {
 		w.WriteHeader(http.StatusOK)
 		json.NewEncoder(w).Encode(wlst)
+		}
 	} else {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		w.Write([]byte("Method not allowed."))
