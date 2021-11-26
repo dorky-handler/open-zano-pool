@@ -397,6 +397,22 @@ func (r *RedisClient) GetBalance(login string) (int64, error) {
 	return cmd.Int64()
 }
 
+func (r *RedisClient) GetThreshold(login string) (int64, error) {
+	cmd := r.client.HGet(r.formatKey("settings", login), "payoutthreshold")
+	if cmd.Err() == redis.Nil {
+		return 0, nil
+	} else if cmd.Err() != nil {
+		return 0, cmd.Err()
+	}
+	return cmd.Int64()
+}
+
+func (r *RedisClient) SetThreshold(login string, threshold int64) (bool, error) {
+	cmd, err := r.client.HSet(r.formatKey("settings", login), "payoutthreshold", strconv.FormatInt(threshold, 10)).Result()
+	return cmd, err
+}
+
+
 func (r *RedisClient) LockPayouts(login string, amount int64) error {
 	key := r.formatKey("payments", "lock")
 	result := r._leadClient.SetNX(key, join(login, amount), 0).Val()
