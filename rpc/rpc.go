@@ -362,8 +362,14 @@ func (r *RPCClient) WalletCheck(params string) (bool) {
 	}
 	var reply *WalletReply
 	err = json.Unmarshal(*rpcResp.Result, &reply)
+	log.Printf("Error is: %s", err)
 	if reply.Addr == params {
 		return true
+	}
+	if(err != nil)
+	{
+		log.Printf("Error is: %s", err)
+		return false	
 	}
 	return false
 }
