@@ -366,8 +366,7 @@ func (r *RPCClient) WalletCheck(params string) (bool) {
 	if reply.Addr == params {
 		return true
 	}
-	if(err != nil)
-	{
+	if(err != nil)	{
 		log.Printf("Error is: %s", err)
 		return false	
 	}
