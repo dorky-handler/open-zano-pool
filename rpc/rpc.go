@@ -10,7 +10,7 @@ import (
 	"net/http"
 	"strconv"
 	"sync"
-
+	"log"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/dorky-handler/open-zano-pool/util"
 )
