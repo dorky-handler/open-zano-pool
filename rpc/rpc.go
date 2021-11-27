@@ -366,7 +366,7 @@ func (r *RPCClient) WalletCheck(params string) (bool) {
 	}
 	
 		return true
-
+}
 
 
 
