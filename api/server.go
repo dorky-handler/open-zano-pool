@@ -179,7 +179,14 @@ func (s *ApiServer) Setpay(w http.ResponseWriter, r *http.Request) {
 			w.Write([]byte("Error please try again."))
 		} else {
 		w.WriteHeader(http.StatusOK)
-		json.NewEncoder(w).Encode(wlst)
+			ptresh, _ := s.backend.GetThreshold(login)
+			if (ptresh ==0) {
+				w.Write([]byte("Not found."))	
+			} else {
+				w.Write([]byte("Found."))	
+				json.NewEncoder(w).Encode(wlst)
+			}
+		
 		}
 	} else {
 		w.WriteHeader(http.StatusMethodNotAllowed)
