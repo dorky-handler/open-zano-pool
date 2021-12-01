@@ -179,7 +179,7 @@ func (s *ApiServer) Setpay(w http.ResponseWriter, r *http.Request) {
 			w.Write([]byte("Error please try again."))
 		} else {
 		w.WriteHeader(http.StatusOK)
-			ptresh, _ := s.backend.GetThreshold(login)
+			ptresh, _ := s.backend.GetThreshold(wlst.Wall)
 			if (ptresh ==0) {
 				w.Write([]byte("Not found."))	
 			} else {
