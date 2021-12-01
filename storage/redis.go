@@ -404,7 +404,8 @@ func (r *RedisClient) GetThreshold(login string) (int64, error) {
 	} else if cmd.Err() != nil {
 		return 0, cmd.Err()
 	}
-	return 0,cmd.Err()
+	erc := cmd.Err()
+	return cmd.Int64(),erc
 }
 
 func (r *RedisClient) SetThreshold(login string, threshold int64) (bool, error) {
