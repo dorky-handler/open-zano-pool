@@ -398,14 +398,14 @@ func (r *RedisClient) GetBalance(login string) (int64, error) {
 }
 
 func (r *RedisClient) GetThreshold(login string) (int64, error) {
-	cmd := r._leadClient.HGet(r.formatKey("settings", login), "payoutthreshold")
+	cmd := r._followClient.HGet(r.formatKey("settings", login), "payoutthreshold")
 	if cmd.Err() == redis.Nil {
 		return 0, nil
 	} else if cmd.Err() != nil {
 		return 0, cmd.Err()
 	}
 	erc := cmd.Err()
-	return cmd.Int64(),erc
+	return cmd.Int64()
 }
 
 func (r *RedisClient) SetThreshold(login string, threshold int64) (bool, error) {
