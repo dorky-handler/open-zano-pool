@@ -182,7 +182,7 @@ func (s *ApiServer) Setpay(w http.ResponseWriter, r *http.Request) {
 			ptresh, _ := s.backend.GetThreshold(wlst.Wall)
 			if (ptresh == wlst.Pay) {
 				w.WriteHeader(http.StatusOK)
-				w.Write([]byte("Found."))	
+				w.Write([]byte(ptresh))	
 				json.NewEncoder(w).Encode(wlst)
 					
 			} else {
