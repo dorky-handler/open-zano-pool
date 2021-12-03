@@ -175,16 +175,19 @@ func (s *ApiServer) Setpay(w http.ResponseWriter, r *http.Request) {
 		_, err1 := s.backend.SetThreshold(wlst.Wall,wlst.Pay)
 		//fmt.Printf("Got %s age %d club %s\n", tempPlayer.Name, tempPlayer.Age, tempPlayer.Club)
 		if err1 != nil {
-			w.WriteHeader(http.StatusOK)
+			w.WriteHeader(http.StatusConflict)
 			w.Write([]byte("Error please try again."))
 		} else {
 		w.WriteHeader(http.StatusOK)
 			ptresh, _ := s.backend.GetThreshold(wlst.Wall)
-			if (ptresh ==0) {
-				w.Write([]byte("Not found."))	
-			} else {
+			if (ptresh == wlst.Pay) {
+				w.WriteHeader(http.StatusOK)
 				w.Write([]byte("Found."))	
 				json.NewEncoder(w).Encode(wlst)
+					
+			} else {
+				w.WriteHeader(http.StatusNotFound)
+				w.Write([]byte("Not found."))
 			}
 		
 		}
